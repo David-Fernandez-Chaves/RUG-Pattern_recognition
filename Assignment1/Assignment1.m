@@ -1,7 +1,12 @@
 %Assigment 1
 load('lab1_1.mat');
+
 %Calculate the correlation
 R = corrcoef(lab1_1)
+
+%calculate the corrcoef of people younger and older than 40
+J1 = corrcoef(lab1_1(1:6,:))
+J2 = corrcoef(lab1_1(6:24,:))
 
 %Ploting
 figure;
