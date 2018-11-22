@@ -29,7 +29,6 @@ end
 
 %Part2
 figure; hold on;
-bins = 20;
 hs = histogram(S)
 hd = histogram(D)
 hs.BinWidth = 0.035;
@@ -44,11 +43,21 @@ meanD = mean(D)
 varS = var(S)
 varD = var(D)
 
-pS=normcdf(S,meanS,
+%freedom
+g=meanD*(1-meanD)/varD
 
+%plot pdf over historgram of D and S
+figure; hold on;
+hfitS = histfit(S,7); 
+hfitD = histfit(D,17);
+hfitD(2).Color = [.2 .2 .2];
+pdfFitS = fitdist('Normal',S')
+pdfFitD = fitdist('Normal',D')
+legend({'Equal Iris','Normal distribution of same Iris','Different Iris','Normal distribution of different iris'},'Location','northeast');
+ylabel('Number of occurrences');
+xlabel('Normalised Hamming Distance');
 
-
-
-
+pdfD = makedist('Normal','mu',pdfFitD.mu,'sigma',pdfFitD.sigma);
+error = cdf('Normal',0:0.01:1,pdfD);
 
 
