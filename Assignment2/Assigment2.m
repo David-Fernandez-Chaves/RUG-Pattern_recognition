@@ -28,6 +28,7 @@ for i = 1:size(D,2)
 end
 
 %Part2
+%Question 1
 figure; hold on;
 hs = histogram(S)
 hd = histogram(D)
@@ -38,14 +39,59 @@ xlabel('Distance')
 ylabel('Ocurrences')
 legend('Same person','Different persons')
 
+
+%Questions 2,3,4,5,6,7
 meanS = mean(S)
 meanD = mean(D)
 varS = var(S)
 varD = var(D)
 
-%freedom
+%Question 8,9 degrees of freedom
 g=meanD*(1-meanD)/varD
 
+%Question 10 David
+base = [0:.01:1];
+normS = normpdf(base,meanS,sqrt(varS));
+normD = normpdf(base,meanD,sqrt(varD));
+[MS,FS] = mode(S);
+scale = FS/max(normS);
+plot(base,scale*normS,'LineWidth',2)
+plot(base,scale*normD,'LineWidth',2)
+legend({'Equal Iris','Normal distribution of same Iris','Different Iris','Normal distribution of different iris'},'Location','northeast');
+ylabel('Number of occurrences');
+xlabel('Normalised Hamming Distance');
+
+%Question 11
+pD = normcdf(base,meanD,sqrt(varD));
+%figure
+%plot(base,pD)
+indexD = find(pD>0.0005,1);
+d = indexD/size(base,2)
+
+%Question 12
+pS = normcdf(base,meanS,sqrt(varS));
+%figure
+%plot(base,pS)
+falseRejectionRate = 1-pS(22)
+
+%Question 13
+%1 - 0.7 = 0.3
+
+%Question 14
+testperson = load(sprintf('testperson.mat')); 
+HD=zeros(1,20);
+for i = 1:20
+    dataset = load(sprintf('person%02d.mat',i)); 
+    for n = 1:20
+      a=[dataset.iriscode(n,:);testperson.iriscode];  
+      HD(1,i) = (HD(1,i)+pdist(a,'hamming'))/2;    
+    end  
+end
+
+[index,person] = max(HD)
+
+
+%Question 10 Edu&David
 %plot pdf over historgram of D and S
 figure; hold on;
 hfitS = histfit(S,7); 
