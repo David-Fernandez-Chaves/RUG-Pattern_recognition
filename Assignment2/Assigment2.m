@@ -2,8 +2,8 @@
 
 %Part1
 %Initialize S and D: 1000 normalized HD
-S = zeros(1,1000);
-D = zeros(1,1000);
+S = zeros(1,10000);
+D = zeros(1,10000);
 
 %To S
 for i = 1:size(S,2)
@@ -50,7 +50,7 @@ varD = var(D)
 g=meanD*(1-meanD)/varD
 
 %Question 10 David
-base = [0:.00001:1];
+base = [0:.0001:1];
 normS = normpdf(base,meanS,sqrt(varS));
 normD = normpdf(base,meanD,sqrt(varD));
 [MS,FS] = mode(S);
@@ -97,7 +97,8 @@ end
 
 
 %Question 15
-pHD = normcdf(base,p,p*(1-p)/size(testperson.iriscode,2));
+p=0.5;
+pHD = normcdf(base,p,1/(2*sqrt(size(testperson.iriscode,2))));
 pHD(indexD)
 
 
