@@ -17,3 +17,5 @@ x = mvnpdf(base,mu,Sigma);
 %Question 16
 base = [4 6.5 1];
 x = mvnpdf(base,mu,Sigma);
+
+exp(-( (base-mu)*inv(Sigma)*(base-mu)'  )/2)/((2*pi)^(3/2)*sqrt(det(Sigma)))
