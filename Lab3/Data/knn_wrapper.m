@@ -1,10 +1,10 @@
 clear all;
 load lab3_2.mat;
 
-K=1;
+K=7;
 samples=64;
 data = lab3_2;
-nr_of_classes = 2;
+nr_of_classes = 4;
 
 % Class labels
 class_labels = floor( (0:length(data)-1) * nr_of_classes / length(data) );
