@@ -10,10 +10,14 @@ hc = hough(edges);
 imageDiagonal=sqrt(size(c,1)^2+size(c,2)^2);
 imagesc(hc);
 title('S3836452')
-xticklabels({-70:20:90})
-yticklabels({-imageDiagonal+100:100:imageDiagonal})
+xticklabels = -90:20:90;
+xticks = linspace(1, size(hc, 2), numel(xticklabels));
+set(gca, 'XTick', xticks, 'XTickLabel', xticklabels)
+yticklabels = -imageDiagonal:50:imageDiagonal;
+yticks = linspace(1, size(hc, 1), numel(yticklabels));
+set(gca, 'YTick', yticks, 'YTickLabel', flipud(yticklabels(:)))
 xlabel('\theta	(degrees)')	
-ylabel('\rho')	
+ylabel('\rho')		
 
 %Question4
 hcTh = hc;
@@ -34,5 +38,5 @@ title('Houghpeaks')
 figure
 hold on
 imshow(c)
-myhoughline(c,r-imageDiagonal,44)
+myhoughline(c,r-imageDiagonal,theta-90)
 
