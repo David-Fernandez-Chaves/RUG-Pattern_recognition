@@ -9,8 +9,8 @@ edges = edge(c, 'canny');
 %Question3
 imageDiagonal=sqrt(size(c,1)^2+size(c,2)^2);
 imagesc(hc);
-title('S3836452')
-%title('S3880788')
+%title('S3836452')
+title('S3880788')
 xticklabels = -90:20:90;
 xticks = linspace(1, size(hc, 2), numel(xticklabels));
 set(gca, 'XTick', xticks, 'XTickLabel', xticklabels)
@@ -27,7 +27,7 @@ imagesc(hcTh)
 
 %Question5
 [H,T,R] = hough(edges);
-P  = houghpeaks(hc,1);
+P  = houghpeaks(hc,5);
 imshow(H,[],'XData',T,'YData',R,'InitialMagnification','fit');
 xlabel('\theta'), ylabel('\rho');
 axis on, axis normal, hold on;
