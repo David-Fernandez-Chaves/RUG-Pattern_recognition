@@ -2,15 +2,15 @@ function H = myhough(edge_map)
 figure;
 imshow(edge_map);
 [rows, columns] = find(edge_map); %foreground in an edge map corresponds to edges
-calculations = zeros(size(rows,1),180);
+calculations = zeros(size(rows,1),180); %ro's
 for theta = -89:90
-    calculations(:,theta+90) = round((columns.*cosd(theta)+rows.*sind(theta)));
+    calculations(:,theta+90) = round((columns.*cosd(theta)+rows.*sind(theta))); %calculate all ro's from a point
 end
-pmax = max(calculations,[],'all'); %max ro
+pmax = max(calculations,[],'all'); %max ro 
 H = zeros(pmax*2,180); %accumulator array
 for degree = 1:180
     for values = 1:size(rows,1)
-        H(calculations(values,degree)+pmax,degree) = H(calculations(values,degree)+pmax,degree) +1;
+        H(calculations(values,degree)+pmax,degree) = H(calculations(values,degree)+pmax,degree) +1; % H(ro,zeta) = H(ro,zeta) +1
     end
 end
 % [x y]=size(edge_map);
