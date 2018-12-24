@@ -1,5 +1,5 @@
 %Assignment1
-close all
+%close all
 %Setting and Load Datas
 nu=0.01;
 nWA = 2;
@@ -53,9 +53,9 @@ while abs(TrainingError(size(TrainingError,1),1)-TrainingError(size(TrainingErro
         distance = vecnorm(dif'); %Get the distance
         i=find(distance==min(distance)); %Find the minimum distance
         if xor(i<=nWA,n<=size(A,1)) %Check if the prototype and the data are of equal classes
-            w(i,:)=w(i,:)-nu*(dif(i,:)); %Different classes
+            w(i,:)=w(i,:)+nu*(dif(i,:)); %Different classes
         else
-            w(i,:)=w(i,:)+nu*(dif(i,:)); %Same class
+            w(i,:)=w(i,:)-nu*(dif(i,:)); %Same class
         end            
     end
     for n=1:size(w,1)
