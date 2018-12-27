@@ -25,7 +25,7 @@ for nWA=1:2      %Multiple Tests
         title(['Prototypes of A: ',num2str(nWA),', Prototypes of B: ',num2str(nWB)])
 
         %% Prototypes initialization
-        w = zeros(nWA+nWB,size(A,2));
+        w = zeros(nWA+nWB,size(datas,2));
         xAmin=min(A(:,1));
         yAmin=min(A(:,2));
         xBmin=min(B(:,1));
