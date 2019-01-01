@@ -1,6 +1,6 @@
 function [w,TrainingError] = LVQ1_learning(datas,nu,nWA,nWB)
 %LVQ1 learning for two class
-    %datas
+    %data with class tags
     %learning percentage
     %number of class A prototypes
     %number of class B prototypes
