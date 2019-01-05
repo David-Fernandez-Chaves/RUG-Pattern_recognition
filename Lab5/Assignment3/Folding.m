@@ -8,21 +8,21 @@ nWB = 1;
 lambdas = [0.5 0.5];
 A = importdata('data_lvq_A(1).mat');
 B = importdata('data_lvq_B(1).mat');
-[p,n] = size(A);
-datas = zeros(p*2,n+1);
-datas(:,1:2) = [A;B];
-datas(1:p,3) = 1; %points of class A
-datas(p+1:end,3) = 2; %points of class B
-%rng(9); %fix randperm
-datas = datas(randperm(p*2),:); %shuffle the data
-section = round(p*2/nFold); %section
+data = [A;B];
+data = [data,[zeros(size(A,1),1)+1;zeros(size(B,1),1)+2]];
+data = data(randperm(size(data,1)),:); %shuffle the data
+%reshape datas
+rowdist = (size(data,1) / nFold) * ones(1, nFold);
+partitions = mat2cell(data, rowdist, size(data,2));
+
 errClass = zeros(nFold,1); %error test
 errClassTrain = zeros(nFold,1); %error training
 %% CrossValidation
 for foldnumber=1:nFold
     %Separate the training and test data
-    dataTest = datas((foldnumber-1)*section+1:foldnumber*section,:);
-    dataTrain = datas(~ismember(datas,dataTest,'rows'),:);
+    dataTest = partitions{foldnumber};
+    dataTrain = cat(1,partitions{1:foldnumber-1},partitions{foldnumber+1:size(partitions,1)});
+    
     %Do the learning process
     [lambdasVector,w,errorEpoch] = RLVQ_learning(dataTrain,nu,nWA,nWB,lambdas);
     errClassTrain(foldnumber) = errorEpoch(end); %final training error of the epoch
@@ -30,9 +30,10 @@ for foldnumber=1:nFold
     errClass(foldnumber) = RLVQ_test(dataTest,w,lambdasVector(end,:)); %test error of the epoch
 end
 figure; hold on;
-bar(errClassTrain*100);
-meanTestError = mean(errClass*100);
+bar(errClassTrain);
+meanTestError = mean(errClass);
 plot([0 11],[meanTestError meanTestError]);
+axis([1 size(errClass,1) 0 1])
 xlabel('Number of fold');
 ylabel('Error(%)');
 legend({'Training Error','Mean Test Error'})

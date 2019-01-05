@@ -18,13 +18,9 @@ ylabel('Feature 2');
 
 
 %% Tag by class
-[p,n] = size(A);
-data = zeros(p*2,n+1);
-data(:,1:2) = [A;B];
-data(1:p,3) = 1; %points of class A
-data(p+1:end,3) = 2; %points of class B
-%rng(9); %fix randperm
-data = data(randperm(p*2),:); %shuffle the data
+data = [A;B];
+data = [data,[zeros(size(A,1),1)+1;zeros(size(B,1),1)+2]];
+data = data(randperm(size(data,1)),:); %shuffle the data
 
 
 %% Training

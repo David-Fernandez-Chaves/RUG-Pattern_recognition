@@ -15,15 +15,6 @@ data = data(randperm(size(data,1)),:); %shuffle the data
 rowdist = (size(data,1) / nFold) * ones(1, nFold);
 partitions = mat2cell(data, rowdist, size(data,2));
 
-
-[p,n] = size(A);
-data = zeros(p*2,n+1);
-data(:,1:2) = [A;B];
-data(1:p,3) = 1; %points of class A
-data(p+1:end,3) = 2; %points of class B
-%rng(9); %fix randperm
-data = data(randperm(p*2),:); %shuffle the data
-section = round(p*2/nFold); %section
 errClass = zeros(nFold,1); %error test
 errClassTrain = zeros(nFold,1); %error training
 %% CrossValidation
@@ -31,6 +22,7 @@ for foldnumber=1:nFold
     %Separate the training and test data
     dataTest = partitions{foldnumber};
     dataTrain = cat(1,partitions{1:foldnumber-1},partitions{foldnumber+1:size(partitions,1)});
+    
     %Do the learning process
     [w,errClassTrain(foldnumber)] = LVQ1_learning(dataTrain,nu,nWA,nWB);
     %Get the test error
