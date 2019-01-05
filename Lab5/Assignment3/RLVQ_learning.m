@@ -21,10 +21,10 @@ function [lambdasVector,w,TrainingErrorVector] = RLVQ_learning(data,nu,nWA,nWB,l
             distance = sum(lambdas.*(dif.^2),2); %squared euclidean norm
             [~,i] = min(distance); %Find the minimum distance
             if w(i,3) ~= data(n,3) %Check if the prototype and the data are of equal classes
-                w(i,1:2)=w(i,1:2)+nu*(dif(i,:)); %Different classes
+                w(i,1:2)=w(i,1:2)+nu*(lambdas.*dif(i,:)); %Different classes
                 lambdas = lambdas + nu*(dif(i,:)); %update lambdas
             else
-                w(i,1:2)=w(i,1:2)-nu*(dif(i,:)); %Same class
+                w(i,1:2)=w(i,1:2)-nu*(lambdas.*dif(i,:)); %Same class
                 lambdas = lambdas - nu*(dif(i,:)); %update lambdas
             end
             lambdas = exp(lambdas)/sum(exp(lambdas))
