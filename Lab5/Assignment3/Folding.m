@@ -1,5 +1,5 @@
 %Assignment3
-close all
+%close all
 %Setting and Load Datas
 nFold=10;
 nu=0.01;
