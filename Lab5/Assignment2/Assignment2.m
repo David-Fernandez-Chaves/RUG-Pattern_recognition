@@ -5,8 +5,17 @@ nFold=10;
 nu=0.01;
 nWA = 2;
 nWB = 1;
+nFold=10;
 A = importdata('data_lvq_A(1).mat');
 B = importdata('data_lvq_B(1).mat');
+data = [A;B];
+data = [data,[zeros(size(A,1),1)+1;zeros(size(B,1),1)+2]];
+data = data(randperm(size(data,1)),:); %shuffle the data
+%reshape datas
+rowdist = (size(data,1) / nFold) * ones(1, nFold);
+partitions = mat2cell(data, rowdist, size(data,2));
+
+
 [p,n] = size(A);
 data = zeros(p*2,n+1);
 data(:,1:2) = [A;B];
@@ -20,8 +29,8 @@ errClassTrain = zeros(nFold,1); %error training
 %% CrossValidation
 for foldnumber=1:nFold
     %Separate the training and test data
-    dataTest = data((foldnumber-1)*section+1:foldnumber*section,:);
-    dataTrain = data(~ismember(data,dataTest,'rows'),:);
+    dataTest = partitions{foldnumber};
+    dataTrain = cat(1,partitions{1:foldnumber-1},partitions{foldnumber+1:size(partitions,1)});
     %Do the learning process
     [w,errClassTrain(foldnumber)] = LVQ1_learning(dataTrain,nu,nWA,nWB);
     %Get the test error
