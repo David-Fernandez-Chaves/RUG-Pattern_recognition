@@ -24,9 +24,10 @@ for foldnumber=1:nFold
     dataTest = datas((foldnumber-1)*section+1:foldnumber*section,:);
     dataTrain = datas(~ismember(datas,dataTest,'rows'),:);
     %Do the learning process
-    [lambdas,w,errClassTrain(foldnumber)] = RLVQ_learning(dataTrain,nu,nWA,nWB,lambdas);
+    [lambdasVector,w,errorEpoch] = RLVQ_learning(dataTrain,nu,nWA,nWB,lambdas);
+    errClassTrain(foldnumber) = errorEpoch(end); %final training error of the epoch
     %Get the test error
-    errClass(foldnumber) = RLVQ_test(dataTest,w,lambdas);
+    errClass(foldnumber) = RLVQ_test(dataTest,w,lambdasVector(end,:)); %test error of the epoch
 end
 figure; hold on;
 bar(errClassTrain*100);
