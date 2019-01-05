@@ -39,6 +39,7 @@ scatter(w(:,1),w(:,2),'g','filled');
 figure; hold on;
 subplot(1,2,1);
 plot(trainingErrorVector);
+axis([1 size(trainingErrorVector,1) 0 1])
 xlabel('Epochs');
 ylabel('Training Error(%)');
 subplot(1,2,2);
