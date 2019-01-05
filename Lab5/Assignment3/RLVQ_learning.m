@@ -27,7 +27,7 @@ function [lambdasVector,w,TrainingErrorVector] = RLVQ_learning(data,nu,nWA,nWB,l
                 w(i,1:2)=w(i,1:2)-nu*(lambdas.*dif(i,:)); %Same class
                 lambdas = lambdas - nu*(dif(i,:)); %update lambdas
             end
-            lambdas = exp(lambdas)/sum(exp(lambdas))
+            lambdas = exp(lambdas)/sum(exp(lambdas));
         end
 
         % Geting Training Error
