@@ -10,15 +10,17 @@ while means ~= new_means
     means = new_means;
     % Assign each point to its closest mean
     [~,set(:,3)] = min(pdist2(means,set(:,1:2)));
+    % Plot
+    figure;hold on;
+    scatter(set(set(:,3)==1,1),set(set(:,3)==1,2),'r','filled');
+    scatter(set(set(:,3)==2,1),set(set(:,3)==2,2),'b','filled');
+    scatter(new_means(:,1),new_means(:,2),'g','filled');
+    xlabel('Feature 1');
+    ylabel('Feature 2');
     % Update means
     for idx = 1:k
         new_means(idx,:) = mean(set(set(:,3) == idx));
     end
-    figure;hold on;
-    scatter(set(set(:,3)==1,1),set(set(:,3)==1,2),'r','filled');
-    scatter(set(set(:,3)==2,1),set(set(:,3)==2,2),'b','filled');
-    xlabel('Feature 1');
-    ylabel('Feature 2');
 end
 end
 
