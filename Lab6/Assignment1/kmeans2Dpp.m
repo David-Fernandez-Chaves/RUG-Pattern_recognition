@@ -1,7 +1,9 @@
-function [meansAcc,data,J] = kmeans2D(data,k)
+function [meansAcc,data,J] = kmeans2Dpp(data,k,means)
 
 % Initializations
-    means = data(randperm(size(data,1),k),:); %k random point from the set
+    if isempty(means)
+        means = data(randperm(size(data,1),k),:); %k random point from the set
+    end
     data = [data,zeros(size(data,1),1)]; %extra column for tag
     meansAcc = means; %means through iteration
     diff=1; %Loop condition
