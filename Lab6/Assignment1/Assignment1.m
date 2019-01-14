@@ -1,9 +1,9 @@
 %% Assignment1
 % close all;
 load('kmeans1.mat');
-[means2,data2] = kmeans2D(kmeans1,2);
-[means4,data4] = kmeans2D(kmeans1,4);
-[means8,data8] = kmeans2D(kmeans1,8);
+[means2,data2] = kmeans2D(kmeans1,2,0);
+[means4,data4] = kmeans2D(kmeans1,4,0);
+[means8,data8] = kmeans2D(kmeans1,8,0);
 
 colors=rand(8,3); 
 markers = ['o','+','*','x','s','d','^','v','>','<','p','h'];
@@ -48,10 +48,6 @@ scatter(means8(lastmean:lastmean+k,1),means8(lastmean:lastmean+k,2),40,'ks','fil
 
 xlabel('Feature 1');
 ylabel('Feature 2');
-
-
-
-
 
 
 %% Question 3 ----------------------------------------------------------
@@ -119,7 +115,7 @@ legend(legend_class,{'Class 1','Class 2','Class 3','Class 4','Class 5','Class 6'
 %% Question 3 ----------------------------------------------------------
 
 d=2; %dimensionality
-runs=5;
+runs=20;
 ks=20;
 R=zeros(ks,runs);
 J=zeros(ks,runs);
@@ -135,14 +131,14 @@ end
 
 R=mean(R,2);
 J=mean(J,2);
-D=R/J;
-Kopt=arg(max(D));
+D=R./J;
+[~,Kopt]=max(D);
 
 %% Question 4 ----------------------------------------------------------
 figure
 plot(D)    
 axis([1 ks 0 inf])
-line([Kopt Kopt],get(hax,'YLim'),'Color',[1 0 0])
+line([Kopt Kopt],[min(D),max(D)],'Color',[1 0 0])
 title('D');
 
 
@@ -152,9 +148,17 @@ hold on
 plot(J)
 plot(R)
 axis([1 ks 0 inf])
-line([Kopt Kopt],get(hax,'YLim'),'Color',[1 0 0])
+line([Kopt Kopt],[min(J),max(J)],'Color',[1 0 0])
 title('J and R');
-legend();
+legend('J','R','Kopt');
 
 
 %% Question 8 ----------------------------------------------------------
+
+load('checkerboard.mat');
+k=100;
+runs=20;
+[means,data] = kmeans2D(checkerboard,k,0);
+[meanspp,datapp] = kmeans2D(checkerboard,k,1);
+
+
