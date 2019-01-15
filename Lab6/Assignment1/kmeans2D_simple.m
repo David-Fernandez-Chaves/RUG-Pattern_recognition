@@ -1,7 +1,11 @@
-function [meansAcc,data,J] = kmeans2D_simple(data,k)
+function [meansAcc,data,J] = kmeans2D_simple(data,k,prototypes)
 
     % Initializations
-    means = data(randperm(size(data,1),k),:); %k random point from the set
+    if isempty(prototypes)
+        means = data(randperm(size(data,1),k),:); %k random point from the set
+    else
+        means = prototypes; 
+    end
     data = [data,zeros(size(data,1),1)]; %extra column for tag
     meansAcc = means; %means through iteration
     diff=1; %Loop condition

@@ -9,7 +9,7 @@ function [prototypes] = batchNG(Data, n, epochs, xdim, ydim)
 error(nargchk(3, 5, nargin));  % check the number of input arguments
 if (nargin<4)
   xdim=1; ydim=2;   % default plot values
-end;
+end
 
 [dlen,dim] = size(Data);
 
@@ -28,44 +28,38 @@ lambda = lambda0 * (0.01/lambda0).^([0:(epochs-1)]/epochs);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Action
 
-for i=1:epochs,
-  D_prototypes = zeros(n,dim);   % difference for vectors is initially zero
-  D_prototypes_av = zeros(n,1);       % the same holds for the quotients
+for i=1:epochs
+  D_prototypes_av = zeros(n,dlen);       % the same holds for the quotients
   
-  for j=1:dlen,  % consider all points at once for the batch update
+  for j=1:dlen  % consider all points at once for the batch update
     
     % sample vector
     x = Data(j,:); % sample vector
-    X = x(ones(n,1),:);  % we'll need this
     
     % neighborhood ranking
-    % DISTANCE!!!
-    % 1-BMU, 2-BMU, etc. (hint:sort)
-    %find ranking,h,H
-    
-    % accumulate update
-    D_prototypes = ...
-    D_prototypes_av = ...
+    D_prototypes = pdist2(prototypes,x);
+    [~, D_prototypes] = sort(D_prototypes);
+
+     D_prototypes_av(:,j) = D_prototypes;
   end
-  D_prototypes = ...
-      
-  % update
-  prototypes = D_prototypes ;
+
+  for p=1:n
+    prototypes(p,:) = (exp(-D_prototypes_av(p,:)/lambda(i))*Data) / sum(exp(-D_prototypes_av(p,:)/lambda(i)));
+  end
   
   % track
-  if 1,   %plot each epoch
-    fprintf(1,'%d / %d \r',i,epochs);
-    hold off
-    plot(Data(:,xdim),Data(:,ydim),'bo','markersize',3)
+  if ismember(i,[20,100,200,500])   %plot each epoch
+    %fprintf(1,'%d / %d \r',i,epochs);
+    ss=1;
+    subplot(2,2,ss);
     hold on
+    plot(Data(:,xdim),Data(:,ydim),'bo','markersize',3)
     plot(prototypes(:,xdim),prototypes(:,ydim),'r.','markersize',10,'linewidth',3)
     % write code to plot decision boundaries
-    ... 
-    plot decision boundaries here
-    ...
+    voronoi(prototypes(:,xdim),prototypes(:,ydim))
     %pause
     %or
-    drawnow
+    ss=ss+1;
   end
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
