@@ -112,7 +112,7 @@ ylabel('Feature 2');
 legend(legend_class,{'Class 1','Class 2','Class 3','Class 4','Class 5','Class 6','Class 7','Class 8'});
 
 
-%% Question 3 ----------------------------------------------------------
+%% Question 4 to 7-------------------------------------------------------
 
 d=2; %dimensionality
 runs=20;
@@ -122,7 +122,7 @@ J=zeros(ks,runs);
 
 for r=1:runs
     for k=1:ks
-        [means,data,J(k,r)] = kmeans2D(kmeans1,k);
+        [means,data,J(k,r)] = kmeans2D(kmeans1,k,0);
         R(k,r)=J(1,r)*k^(-2/d);
     end
 end
@@ -140,7 +140,8 @@ plot(D)
 axis([1 ks 0 inf])
 line([Kopt Kopt],[min(D),max(D)],'Color',[1 0 0])
 title('D');
-
+xlabel('K');
+ylabel('Value');
 
 %% Question 5 ----------------------------------------------------------
 figure 
@@ -151,14 +152,41 @@ axis([1 ks 0 inf])
 line([Kopt Kopt],[min(J),max(J)],'Color',[1 0 0])
 title('J and R');
 legend('J','R','Kopt');
+xlabel('K');
+ylabel('Value');
 
 
-%% Question 8 ----------------------------------------------------------
+%% Question 8 to 13 -----------------------------------------------------
 
 load('checkerboard.mat');
 k=100;
 runs=20;
-[means,data] = kmeans2D(checkerboard,k,0);
-[meanspp,datapp] = kmeans2D(checkerboard,k,1);
+series = 10;
+
+quantization_error=zeros(series,runs);
+quantization_error_pp=zeros(series,runs);
+
+for s=1:series
+    for r=1:runs
+        [~,~,quantization_error(s,r)] = kmeans2D(checkerboard,k,0);
+        [~,~,quantization_error_pp(s,r)] = kmeans2D(checkerboard,k,1);
+    end
+end
+quantization_error = min(quantization_error');
+quantization_error_pp = min(quantization_error_pp');
+
+%Get means and variance
+m = mean(quantization_error);
+variance = var(quantization_error);
+m_pp = mean(quantization_error_pp);
+variance_pp = var(quantization_error_pp);
+
+%Welch's t-test
+
+t=(m-m_pp)/sqrt(variance/series +variance_pp/series)
+
+
+
+
 
 
