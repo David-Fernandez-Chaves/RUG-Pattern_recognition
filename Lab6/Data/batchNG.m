@@ -24,33 +24,20 @@ lambda0 = n/2; %initial neighborhood value
 lambda = lambda0 * (0.01/lambda0).^([0:(epochs-1)]/epochs);
 % note: the lecture slides refer to this parameter as sigma^2
 %       instead of lambda
-
+ss=1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Action
 
 for i=1:epochs
   D_prototypes_av = zeros(n,dlen);       % the same holds for the quotients
-  
-  for j=1:dlen  % consider all points at once for the batch update
-    
-    % sample vector
-    x = Data(j,:); % sample vector
-    
-    % neighborhood ranking
-    D_prototypes = pdist2(prototypes,x);
-    [~, D_prototypes] = sort(D_prototypes);
 
-     D_prototypes_av(:,j) = D_prototypes;
-  end
-
-  for p=1:n
-    prototypes(p,:) = (exp(-D_prototypes_av(p,:)/lambda(i))*Data) / sum(exp(-D_prototypes_av(p,:)/lambda(i)));
-  end
+ [~,D_prototypes] = sort(pdist2(prototypes,Data));
+ lambda(i)
+  prototypes = exp(-(D_prototypes/lambda(i)))*Data./sum(exp(-(D_prototypes/lambda(i))),2);
   
   % track
   if ismember(i,[20,100,200,500])   %plot each epoch
     %fprintf(1,'%d / %d \r',i,epochs);
-    ss=1;
     subplot(2,2,ss);
     hold on
     plot(Data(:,xdim),Data(:,ydim),'bo','markersize',3)
