@@ -33,6 +33,8 @@ for i=1:epochs
     [~,D_prototypes] = sort(pdist2(prototypes,Data));
     %Update prototypes
     prototypes = exp(-(D_prototypes/lambda(i)))*Data./sum(exp(-(D_prototypes/lambda(i))),2);
+    
+    
     %Plot
     if ismember(i,[20,100,200,500])   
         subplot(2,2,ss);
