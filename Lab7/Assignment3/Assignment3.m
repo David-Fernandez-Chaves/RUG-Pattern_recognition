@@ -6,18 +6,11 @@ x3=[1;4];
 x4=[4;2];
 x5=[3;0];
 
-x=[x1 x2 x3 x4 x5]';
+c1=[x3 x5 ];
+c2=[x4 x2 x1];
 
-c1=[x3 x1  x2 ]';
-c2=[x4 x5]';
-
-m1=mean(mean(c1));
-m2=mean(mean(c2));
-
-Je=0;
-
-for i=1:size(x,1)
-   Je=Je+sum(pow2(x(i)-m1)+pow2(x(i)-m2));
-end
-
-Je
+m1=mean(c1,2); %we are working with two dimension
+m2=mean(c2,2);
+% ATTENTION all only works on 2018b edition
+Je = sum((c1-m1).^2,'all'); %since we don't have to submit the code 
+Je = Je + sum((c2-m2).^2,'all'); %and is only two clusters
